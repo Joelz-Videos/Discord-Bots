@@ -1,0 +1,34 @@
+# Simple imports you will need!
+
+import discord
+from discord.ext import commands, tasks
+import datetime
+import asyncio
+import traceback
+import sys
+from itertools import cycle
+import random
+
+# Bot prefix feel free to change
+client = commands.Bot(command_prefix = '!')
+
+# Complex Status Displays how manu users!
+async def status_task():
+    while True:
+      userCount = sum(i.member_count for i in client.guilds)
+      await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=f"{userCount} Users")) 
+   
+# On ready function, to let you know when bot is ready   
+@client.event
+async def on_ready():
+    client.loop.create_task(status_task())
+    print('Bot is ready!')
+    
+# Simple non-embed command    
+@client.command()
+async def hello(ctx):
+    await ctx.send(f"Hello {ctx.author.mention}")
+
+# Your token, keep this at the bottom at all times!
+client.run('Replace with your token')      
+
